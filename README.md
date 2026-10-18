@@ -18,6 +18,12 @@ PDF banane ke liye internet zaroori hai (html2canvas aur jsPDF libraries CDN se 
 - Live preview, exact original template layout
 - Deposit (50%) aur remaining balance ka automatic hisaab
 - Payment status, T&C tick, signature, notes
-- Draft browser mein save rehta hai; "New Quotation" se blank form
-- A4 PDF download, file naam: "<Customer Name> Quotation.pdf", ya "PDF File Name" box mein apna naam likhein
+- Site always opens with an empty template (no previous client data); a page refresh keeps what you typed in that tab
+- "New" clears the form in one click
+- PDF download at the exact template size (1149 × 1303 px page, no extra margins or blank space)
+- Save Image: PNG at the original template size (1149 × 1303 px)
+- File name: "<Customer Name> Quotation.pdf / .png" by default, or type your own in the "File name" box
 - Mobile par Form / Preview tabs, bade touch buttons
+- iPhone/iPad: image opens the share sheet ("Save Image" saves it to Photos); PDF saves to Files › Downloads in Safari (share sheet "Save to Files" in other iOS browsers)
+- Android: PDF and image save to Downloads (images also show in the Gallery)
+- The iPhone share sheet only works over https (e.g. GitHub Pages), not over a local http:// address

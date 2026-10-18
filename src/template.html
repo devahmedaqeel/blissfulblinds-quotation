@@ -1,166 +1,269 @@
 <title>Blissful Blinds Quotation</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Dancing+Script:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Poppins:wght@400;500;600;700&family=Dancing+Script:wght@600&display=swap">
 <style>
-/* Layout: editor form on the left, exact template preview on the right; stacks on phones */
+/* App shell: top bar, form cards on the left, live sheet preview on the right; Form/Preview tabs on phones */
 :root{
-  --bg:#eef1f6; --panel:#ffffff; --fg:#13224a; --muted:#5d6a86; --line:#d3dae6;
-  --navy:#10234f; --red:#d5232f; --field:#f6f8fb;
-  --font:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --bg:#f2f4f8; --panel:#ffffff; --fg:#14213d; --muted:#64708a; --line:#e3e8f0; --field:#f7f9fc; --field-line:#d5dce8;
+  --soft:#eef2f8; --red:#d5232f; --red-ink:#b81d28; --ring:rgba(213,35,47,.2);
+  --shadow:0 1px 2px rgba(16,35,79,.05),0 6px 20px rgba(16,35,79,.05);
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0d1424; --panel:#152038; --fg:#e6ebf5; --muted:#9aa7c2; --line:#2a3858; --field:#0f1930; color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0d1424; --panel:#152038; --fg:#e6ebf5; --muted:#9aa7c2; --line:#2a3858; --field:#0f1930; color-scheme:dark}
+  --bg:#0b1220; --panel:#121b2e; --fg:#e7ecf6; --muted:#97a3bd; --line:#213050; --field:#0e1627; --field-line:#2b3b5d; --soft:#18233b;
+  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1220; --panel:#121b2e; --fg:#e7ecf6; --muted:#97a3bd; --line:#213050; --field:#0e1627; --field-line:#2b3b5d; --soft:#18233b;
+  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:var(--font);margin:0}
-.app{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:24px;align-items:start;
-  padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1500px;margin:0 auto}
-@media (max-width:900px){.app{grid-template-columns:minmax(0,1fr)}}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
-.panel h1{margin:0;font-size:19px;font-weight:600;color:var(--fg);text-wrap:balance}
-.panel p.sub{margin:-8px 0 0;color:var(--muted);font-size:13px}
-.grp{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:14px}
-.grp>span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--red);font-weight:600}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-label.fld{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted);font-weight:500;min-width:0}
-label.fld input,label.fld textarea{font:inherit;font-size:14px;color:var(--fg);background:var(--field);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
-label.fld input:focus,label.fld textarea:focus{outline:2px solid var(--red);outline-offset:0;border-color:transparent}
-.radios{display:flex;flex-wrap:wrap;gap:8px}
-.radios label{display:flex;align-items:center;gap:6px;font-size:13.5px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;background:var(--field)}
-.radios input{accent-color:var(--red)}
-.chk{display:flex;gap:8px;align-items:center;font-size:13.5px}
-.chk input{accent-color:var(--red);width:16px;height:16px}
-.btns{display:flex;flex-wrap:wrap;gap:10px;position:sticky;bottom:0;background:var(--panel);padding-block:10px 0}
-button{font:inherit;font-size:14px;font-weight:600;border-radius:8px;padding:11px 16px;cursor:pointer;border:1px solid var(--line);background:var(--field);color:var(--fg)}
-button.primary{background:var(--red);border-color:var(--red);color:#fff;flex:1}
-button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
-button:disabled{opacity:.6;cursor:wait}
-.status{font-size:13px;color:var(--muted);min-height:1.2em;margin:0}
-.preview{min-width:0;position:sticky;top:max(16px,env(safe-area-inset-top,0px))}
-.scaler{width:100%;overflow:hidden;border-radius:6px;box-shadow:0 6px 28px rgba(10,20,50,.18)}
-.hint{font-size:12px;color:var(--muted);margin:8px 0 0}
-.fhint{font-size:11.5px;color:var(--muted);font-weight:400}
-.tabs,.mob{display:none}
-
-/* ===== Phones / small tablets: Form and Preview as two tabs ===== */
 html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:14px;margin:0;-webkit-font-smoothing:antialiased}
+.ico{width:18px;height:18px;flex:none}
+
+/* Top bar */
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--panel) 90%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.topbar-in{max-width:1440px;margin:0 auto;display:flex;align-items:center;gap:12px;
+  padding:12px max(20px,env(safe-area-inset-right,0px)) 12px max(20px,env(safe-area-inset-left,0px))}
+.brand{display:flex;align-items:center;gap:12px;min-width:0;margin-right:auto}
+.mark{width:40px;height:40px;border-radius:11px;background:#10234f;color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px;letter-spacing:.03em;position:relative;flex:none}
+.mark::after{content:"";position:absolute;left:10px;right:10px;bottom:7px;height:2.5px;border-radius:2px;background:var(--red)}
+.brand b{display:block;font-size:15.5px;font-weight:650;line-height:1.25;white-space:nowrap}
+.brand small{display:block;font-size:12.5px;color:var(--muted);white-space:nowrap}
+.actions{display:flex;gap:8px}
+
+/* Buttons */
+.btn{font:inherit;font-size:14px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:9px 16px;min-height:42px;
+  cursor:pointer;border:1px solid var(--field-line);background:var(--panel);color:var(--fg);white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
+.btn:hover{background:var(--soft)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 2px 10px rgba(213,35,47,.28)}
+.btn.primary:hover{background:var(--red-ink);border-color:var(--red-ink)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn.ghost:hover{background:var(--soft);color:var(--fg)}
+.btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+.btn:disabled{opacity:.6;cursor:progress}
+
+/* Layout */
+.app{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:32px;align-items:start;max-width:1440px;margin:0 auto;
+  padding:28px max(20px,env(safe-area-inset-right,0px)) 48px max(20px,env(safe-area-inset-left,0px))}
+.panel{display:flex;flex-direction:column;gap:16px;min-width:0}
+.intro h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.015em;text-wrap:balance}
+.intro p{margin:4px 0 0;color:var(--muted);font-size:13.5px;line-height:1.5}
+
+/* Form sections */
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+.sec-h{display:flex;align-items:center;gap:10px;margin-bottom:2px}
+.sec-h i{font-style:normal;width:26px;height:26px;border-radius:8px;background:var(--soft);color:var(--red);font-weight:700;font-size:12.5px;display:grid;place-items:center;flex:none}
+.sec-h h2{margin:0;font-size:15px;font-weight:650}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.fld{display:flex;flex-direction:column;gap:6px;font-size:12.5px;font-weight:550;color:var(--muted);min-width:0}
+.fld input{font:inherit;font-size:14.5px;font-weight:450;color:var(--fg);background:var(--field);border:1px solid var(--field-line);border-radius:10px;padding:10px 12px;width:100%;min-width:0;
+  transition:border-color .15s,box-shadow .15s,background .15s}
+.fld input::placeholder{color:var(--muted);opacity:.65}
+.fld input:focus{outline:none;border-color:var(--red);background:var(--panel);box-shadow:0 0 0 3px var(--ring)}
+.affix{position:relative;display:block}
+.affix>b{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-weight:500;pointer-events:none}
+.affix>input{padding-left:28px}
+.help{font-size:12px;font-weight:450;color:var(--muted);line-height:1.45;overflow-wrap:anywhere}
+.help strong{color:var(--fg);font-weight:600}
+.sub-h{font-size:12.5px;font-weight:550;color:var(--muted);margin-bottom:-6px}
+
+/* Payment status: segmented control */
+.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;background:var(--field);border:1px solid var(--field-line);border-radius:12px;padding:4px}
+.seg label{display:flex;align-items:center;justify-content:center;text-align:center;padding:9px 6px;border-radius:9px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
+.seg input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.seg label:has(input:checked){background:var(--panel);color:var(--fg);box-shadow:0 1px 3px rgba(16,35,79,.16)}
+.seg label:has(input:focus-visible){box-shadow:0 0 0 3px var(--ring)}
+
+/* Toggle switches */
+.sw{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13.5px;font-weight:500;color:var(--fg);cursor:pointer;padding:2px 0}
+.sw input{appearance:none;-webkit-appearance:none;margin:0;width:42px;height:24px;border-radius:999px;background:var(--field-line);position:relative;flex:none;cursor:pointer;transition:background .15s}
+.sw input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+.sw input:checked{background:var(--red)}
+.sw input:checked::after{transform:translateX(18px)}
+.sw input:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+
+/* Preview */
+.preview{min-width:0;position:sticky;top:92px}
+.prev-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.prev-h h2{margin:0;font-size:15px;font-weight:650;display:flex;align-items:center;gap:9px}
+.live{width:8px;height:8px;border-radius:50%;background:#1f9d68;box-shadow:0 0 0 3px rgba(31,157,104,.18)}
+.chip{font-size:12px;font-weight:550;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.desk{background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:clamp(12px,2.4vw,28px)}
+.fitbox{width:100%}
+.scaler{overflow:hidden;margin:0 auto;border-radius:3px;background:#fff;box-shadow:0 2px 6px rgba(16,35,79,.08),0 18px 44px rgba(16,35,79,.16)}
+.hint{font-size:12.5px;color:var(--muted);margin:12px 2px 0;line-height:1.5}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:24px;z-index:20;transform:translate(-50%,12px);opacity:0;pointer-events:none;max-width:calc(100% - 32px);
+  background:#14213d;color:#fff;font-size:13.5px;font-weight:500;padding:11px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);text-align:center;transition:opacity .2s,transform .2s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Save panel (iPhone/iPad) */
+.modal{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:rgba(8,14,30,.55);
+  padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px))}
+.modal.open{display:flex}
+.modal-card{background:var(--panel);color:var(--fg);border-radius:16px;width:100%;max-width:420px;max-height:100%;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.modal-card h2{margin:0;font-size:17px;font-weight:650}
+.modal-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+.modal-card img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:6px;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
+.modal-card img[hidden],.modal-btns .btn[hidden]{display:none}
+.modal-btns{display:flex;gap:10px}
+.modal-btns .btn{flex:1;min-height:48px}
+.modal-btns .btn.primary{flex:1.5}
+
+.tabs,.dock{display:none}
+
+/* ===== Phones / small tablets ===== */
 @media (max-width:900px){
-  .app{gap:12px;padding-top:max(10px,env(safe-area-inset-top,0px));padding-bottom:max(16px,env(safe-area-inset-bottom,0px))}
-  .tabs{display:flex;position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0;gap:6px}
-  .tabs button{flex:1;padding:10px 8px;border-radius:999px}
-  .tabs button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+  .topbar-in{padding-block:10px}
+  .actions .btn:not(#b_new){display:none}
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--field);border:1px solid var(--field-line);border-radius:12px;padding:4px;
+    margin:0 max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+  .tabs button{font:inherit;font-size:14px;font-weight:600;border:0;background:transparent;color:var(--muted);border-radius:9px;min-height:40px;cursor:pointer}
+  .tabs button[aria-selected="true"]{background:var(--panel);color:var(--fg);box-shadow:0 1px 3px rgba(16,35,79,.16)}
+  .tabs button:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+  .app{grid-template-columns:minmax(0,1fr);gap:12px;padding:14px max(16px,env(safe-area-inset-right,0px)) calc(96px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
   .app[data-view="form"] .preview,.app[data-view="preview"] .panel{display:none}
+  .intro{display:none}
   .preview{position:static}
-  .mob{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-  .panel{padding:16px;border-radius:10px}
-  label.fld input,label.fld textarea{font-size:16px;padding:11px 12px}
-  .radios label{padding:9px 14px}
-  .chk input{width:20px;height:20px}
-  .btns{padding-bottom:max(10px,env(safe-area-inset-bottom,0px));margin-inline:-16px;padding-inline:16px;border-top:1px solid var(--line)}
-  button{min-height:46px}
+  .sec{padding:16px;border-radius:12px;gap:12px}
+  .fld input{font-size:16px;padding:12px}
+  .desk{padding:10px;border-radius:12px}
+  .dock{display:flex;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:10;
+    padding:10px max(16px,env(safe-area-inset-right,0px)) max(10px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+    background:color-mix(in srgb,var(--panel) 92%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+  .dock .btn{flex:1;min-height:50px;font-size:15px}
+  .dock .btn.primary{flex:1.5}
+  .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 }
-@media (max-width:380px){.row{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:400px){
+  .seg label{font-size:12px;padding-inline:4px}
+  .brand small{display:none}
+}
+@media (max-width:340px){.grid2{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
 /* ===== The template sheet (fixed paper colours, 1149 x 1303 like the original) ===== */
 .sheet{width:1149px;height:1303px;position:relative;background:#ffffff;color:#10234f;font-family:'Poppins',Arial,sans-serif;transform-origin:0 0;overflow:hidden}
 .sheet .a{position:absolute}
 .sheet img.hdr{left:0;top:0;width:1149px;height:215px}
 .sheet img.corner{right:0;bottom:0;width:101px;height:163px}
-.card{left:20px;top:220px;width:1111px;height:745px;border:3px solid #10234f;border-top:none;border-radius:14px}
-.topl{left:20px;top:218px;width:545px;height:3px;background:#10234f;border-radius:3px 0 0 0}
-.topr{left:585px;top:218px;width:545px;height:3px;background:#d5232f}
-.lbl{font-weight:600;font-size:20px;line-height:1;white-space:nowrap;color:#10234f}
-.lbl.u::after{content:"";position:absolute;left:1px;top:30px;width:30px;height:3px;background:#d5232f;border-radius:2px}
-.ln{border-bottom:1.6px solid #7f93ae;height:34px;font-size:21.5px;font-weight:400;color:#1a2d5e;padding-left:14px;white-space:nowrap;overflow:hidden;line-height:30px}
-.box{border:1.6px solid #6f84a3;font-size:21.5px;color:#1a2d5e;padding:0 14px;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
-.cb{width:29px;height:29px;border:1.8px solid #10234f;border-radius:3px;background:#fff}
-.cb svg{position:absolute;left:2px;top:-4px;width:26px;height:30px}
-.opt{font-size:20.5px;color:#1a2d5e;white-space:nowrap}
-.small{font-size:17px;color:#1a2d5e;white-space:nowrap}
-.bar{left:32px;top:920px;width:1086px;height:35px;background:#10234f;border-radius:10px;color:#fff;font-weight:600;font-size:17.5px;letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:16px}
-.bar i{display:block;width:220px;height:2px;background:#d5232f}
-.bx{border:2.4px solid #10234f;border-radius:12px;background:#fff}
-.bh{font-weight:600;font-size:18px;color:#d5232f;letter-spacing:.01em;white-space:nowrap;border-bottom:1.5px solid #d5232f;padding-bottom:2px;line-height:1.1}
-.k{font-size:17px;color:#1a2d5e;white-space:nowrap}
-.v{font-size:18.5px;font-weight:500;color:#10234f;white-space:nowrap}
-.hr{height:1.4px;background:#7f93ae}
-.big{font-weight:600;font-size:22px;color:#10234f;white-space:nowrap;line-height:1.2}
-.bv{font-size:21px;color:#10234f;white-space:nowrap;line-height:1.2}
-.sig{font-family:'Dancing Script',cursive;font-size:30px;line-height:30px}
+.sheet .card{left:20px;top:220px;width:1111px;height:745px;border:3px solid #10234f;border-top:none;border-radius:14px}
+.sheet .topl{left:20px;top:218px;width:545px;height:3px;background:#10234f;border-radius:3px 0 0 0}
+.sheet .topr{left:585px;top:218px;width:545px;height:3px;background:#d5232f}
+.sheet .lbl{font-weight:600;font-size:20px;line-height:1;white-space:nowrap;color:#10234f}
+.sheet .lbl.u::after{content:"";position:absolute;left:1px;top:30px;width:30px;height:3px;background:#d5232f;border-radius:2px}
+.sheet .ln{border-bottom:1.6px solid #7f93ae;height:34px;font-size:21.5px;font-weight:400;color:#1a2d5e;padding-left:14px;white-space:nowrap;overflow:hidden;line-height:30px}
+.sheet .box{border:1.6px solid #6f84a3;font-size:21.5px;color:#1a2d5e;padding:0 14px;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
+.sheet .cb{width:29px;height:29px;border:1.8px solid #10234f;border-radius:3px;background:#fff}
+.sheet .cb svg{position:absolute;left:2px;top:-4px;width:26px;height:30px}
+.sheet .opt{font-size:20.5px;color:#1a2d5e;white-space:nowrap}
+.sheet .small{font-size:17px;color:#1a2d5e;white-space:nowrap}
+.sheet .bar{left:32px;top:920px;width:1086px;height:35px;background:#10234f;border-radius:10px;color:#fff;font-weight:600;font-size:17.5px;letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:16px}
+.sheet .bar i{display:block;width:220px;height:2px;background:#d5232f}
+.sheet .bx{border:2.4px solid #10234f;border-radius:12px;background:#fff}
+.sheet .bh{font-weight:600;font-size:18px;color:#d5232f;letter-spacing:.01em;white-space:nowrap;border-bottom:1.5px solid #d5232f;padding-bottom:2px;line-height:1.1}
+.sheet .k{font-size:17px;color:#1a2d5e;white-space:nowrap}
+.sheet .v{font-size:18.5px;font-weight:500;color:#10234f;white-space:nowrap}
+.sheet .hr{height:1.4px;background:#7f93ae}
+.sheet .big{font-weight:600;font-size:22px;color:#10234f;white-space:nowrap;line-height:1.2}
+.sheet .bv{font-size:21px;color:#10234f;white-space:nowrap;line-height:1.2}
+.sheet .sig{font-family:'Dancing Script',cursive;font-size:30px;line-height:30px}
 .offscreen{position:fixed;left:-30000px;top:0;pointer-events:none}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
-<div class="app" id="app" data-view="form">
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="mark" aria-hidden="true">BB</div>
+      <div><b>Blissful Blinds</b><small>Quotation Builder</small></div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn ghost" id="b_new"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>New</span></button>
+      <button type="button" class="btn" data-img><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Save Image</span></button>
+      <button type="button" class="btn primary" data-pdf><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg><span>Download PDF</span></button>
+    </div>
+  </div>
   <div class="tabs" role="tablist" aria-label="View">
-    <button type="button" role="tab" id="t_form" aria-selected="true">Form</button>
+    <button type="button" role="tab" id="t_form" aria-selected="true">Details</button>
     <button type="button" role="tab" id="t_prev" aria-selected="false">Preview</button>
   </div>
-  <form class="panel" id="form" autocomplete="off">
-    <h1>Blissful Blinds Quotation</h1>
-    <p class="sub">Customer details bharo, preview live update hoga. Phir PDF download karo.</p>
+</header>
 
-    <div class="grp"><span>Customer</span>
-      <label class="fld">Customer Name<input id="f_name" data-k="name"></label>
-      <label class="fld">Address<input id="f_address" data-k="address"></label>
-      <div class="row">
-        <label class="fld">Post Code<input id="f_postcode" data-k="postcode"></label>
-        <label class="fld">Tel<input id="f_tel" data-k="tel" inputmode="tel"></label>
-      </div>
-      <label class="fld">Email<input id="f_email" data-k="email" inputmode="email"></label>
+<main class="app" id="app" data-view="form">
+  <form class="panel" id="form" autocomplete="off">
+    <div class="intro">
+      <h1>New quotation</h1>
+      <p>Fill in the customer details. The preview updates as you type, then download it as a PDF or image.</p>
     </div>
 
-    <div class="grp"><span>Order</span>
-      <div class="row">
-        <label class="fld">Order Date<input id="f_orderDate" data-k="orderDate"></label>
-        <label class="fld">Installation Date<input id="f_installDate" data-k="installDate"></label>
+    <section class="sec">
+      <div class="sec-h"><i>1</i><h2>Customer</h2></div>
+      <label class="fld">Customer name<input id="f_name" data-k="name" autocapitalize="words" placeholder="e.g. John Smith"></label>
+      <label class="fld">Address<input id="f_address" data-k="address" placeholder="House no. and street"></label>
+      <div class="grid2">
+        <label class="fld">Post code<input id="f_postcode" data-k="postcode" autocapitalize="characters"></label>
+        <label class="fld">Phone<input id="f_tel" data-k="tel" type="tel" inputmode="tel"></label>
       </div>
-      <label class="fld">Blind / Product Type<input id="f_product" data-k="product"></label>
-      <label class="fld">Measurements (Width x Drop)<input id="f_measure" data-k="measure"></label>
-      <div class="row">
+      <label class="fld">Email<input id="f_email" data-k="email" type="email" inputmode="email" autocapitalize="off"></label>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><i>2</i><h2>Order</h2></div>
+      <div class="grid2">
+        <label class="fld">Order date<input id="f_orderDate" data-k="orderDate" placeholder="DD-MM-YYYY"></label>
+        <label class="fld">Installation<input id="f_installDate" data-k="installDate" placeholder="e.g. 10-15 business days"></label>
+      </div>
+      <label class="fld">Blind / product type<input id="f_product" data-k="product"></label>
+      <label class="fld">Measurements (width × drop)<input id="f_measure" data-k="measure" placeholder="e.g. As per attached measurement sheet"></label>
+      <div class="grid2">
         <label class="fld">Windows<input id="f_windows" data-k="windows" inputmode="numeric"></label>
         <label class="fld">Doors<input id="f_doors" data-k="doors" inputmode="numeric"></label>
       </div>
-    </div>
+    </section>
 
-    <div class="grp"><span>Payment</span>
-      <label class="fld">Total Quotation (£)<input id="f_total" data-k="total" inputmode="decimal"></label>
-      <div class="radios" role="radiogroup" aria-label="Payment status">
-        <label><input type="radio" name="pay" id="p_dep" value="deposit"> Deposit Paid</label>
-        <label><input type="radio" name="pay" id="p_full" value="full"> Full Payment</label>
-        <label><input type="radio" name="pay" id="p_pend" value="pending"> Pending</label>
+    <section class="sec">
+      <div class="sec-h"><i>3</i><h2>Payment</h2></div>
+      <label class="fld">Total quotation<span class="affix"><b>£</b><input id="f_total" data-k="total" inputmode="decimal" placeholder="0"></span></label>
+      <div class="sub-h" id="pay_lbl">Payment status</div>
+      <div class="seg" role="radiogroup" aria-labelledby="pay_lbl">
+        <label><input type="radio" name="pay" id="p_dep" value="deposit">Deposit paid</label>
+        <label><input type="radio" name="pay" id="p_full" value="full">Full payment</label>
+        <label><input type="radio" name="pay" id="p_pend" value="pending">Pending</label>
       </div>
-      <label class="chk"><input type="checkbox" id="f_auto" checked> Deposit aur balance khud calculate karo</label>
-      <div class="row">
+      <label class="sw">Calculate deposit and balance automatically<input type="checkbox" id="f_auto" checked></label>
+      <div class="grid2">
         <label class="fld">Deposit (50%)<input id="f_deposit" data-k="deposit"></label>
-        <label class="fld">Remaining Balance<input id="f_remaining" data-k="remaining"></label>
+        <label class="fld">Remaining balance<input id="f_remaining" data-k="remaining"></label>
       </div>
-    </div>
+    </section>
 
-    <div class="grp"><span>Notes &amp; Sign-off</span>
-      <label class="fld">Additional Notes (line 1)<input id="f_notes1" data-k="notes1"></label>
-      <label class="fld">Additional Notes (line 2)<input id="f_notes2" data-k="notes2"></label>
-      <label class="chk"><input type="checkbox" id="f_terms"> Terms &amp; Conditions Acknowledged</label>
-      <div class="row">
-        <label class="fld">Customer Signature (optional)<input id="f_sign" data-k="sign" placeholder="Blank = hand sign"></label>
-        <label class="fld">Date<input id="f_signDate" data-k="signDate"></label>
+    <section class="sec">
+      <div class="sec-h"><i>4</i><h2>Notes &amp; sign-off</h2></div>
+      <label class="fld">Additional notes<input id="f_notes1" data-k="notes1"></label>
+      <label class="fld">Notes (second line)<input id="f_notes2" data-k="notes2"></label>
+      <label class="sw">Terms &amp; conditions acknowledged<input type="checkbox" id="f_terms"></label>
+      <div class="grid2">
+        <label class="fld">Customer signature<input id="f_sign" data-k="sign" placeholder="Leave blank to sign by hand"></label>
+        <label class="fld">Sign date<input id="f_signDate" data-k="signDate" placeholder="DD-MM-YYYY"></label>
       </div>
-    </div>
+    </section>
 
-    <div class="grp"><span>PDF</span>
-      <label class="fld">PDF File Name<input id="f_fname" data-k="fname" enterkeyhint="done">
-        <span class="fhint" id="fname_hint"></span></label>
-    </div>
-
-    <div class="btns">
-      <button type="button" class="primary" data-pdf>Download PDF</button>
-      <button type="button" id="b_new">New Quotation</button>
-    </div>
-    <p class="status" role="status"></p>
+    <section class="sec">
+      <div class="sec-h"><i>5</i><h2>File name</h2></div>
+      <label class="fld">File name (PDF / image)<input id="f_fname" data-k="fname" enterkeyhint="done">
+        <span class="help" id="fname_hint"></span></label>
+    </section>
   </form>
 
-  <div class="preview">
+  <section class="preview" aria-label="Quotation preview">
+    <div class="prev-h">
+      <h2><span class="live" aria-hidden="true"></span>Live preview</h2>
+      <span class="chip">1149 × 1303 px</span>
+    </div>
+    <div class="desk"><div class="fitbox" id="fitbox">
     <div class="scaler" id="scaler"><div class="sheet" id="sheet">
       <img class="a hdr" src="{{HEADER}}" alt="Blissful Blinds Ltd">
       <img class="a corner" src="{{CORNER}}" alt="">
@@ -257,14 +360,27 @@ html{-webkit-text-size-adjust:100%}
       <img class="a" src="{{SHIELD}}" alt="" style="left:700px;top:1172px;width:80px;height:80px">
       <div class="a big" style="left:792px;top:1180px;font-weight:700">Warranty</div><div class="a bv" style="left:792px;top:1213px">2 Years</div>
     </div></div>
-    <p class="hint">Company details, logo aur bank details fixed hain. Sirf customer data change hota hai.</p>
-    <div class="mob">
-      <button type="button" class="primary" data-pdf>Download PDF</button>
-      <button type="button" id="b_edit">Edit Details</button>
+    </div></div>
+    <p class="hint">Logo, company, bank and contact details are fixed. The PDF and image are saved at the original template size, with no extra margins.</p>
+  </section>
+</main>
+
+<div class="dock">
+  <button type="button" class="btn" data-img><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Image</span></button>
+  <button type="button" class="btn primary" data-pdf><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg><span>Download PDF</span></button>
+</div>
+<div class="modal" id="saveModal" role="dialog" aria-modal="true" aria-labelledby="m_title">
+  <div class="modal-card">
+    <h2 id="m_title">Ready</h2>
+    <p id="m_text"></p>
+    <img id="m_img" alt="Quotation image" hidden>
+    <div class="modal-btns">
+      <button type="button" class="btn" id="m_close">Close</button>
+      <button type="button" class="btn primary" id="m_save"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg><span>Save</span></button>
     </div>
-    <p class="status mob" role="status"></p>
   </div>
 </div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <div class="offscreen" id="off" aria-hidden="true"></div>
 
@@ -273,23 +389,22 @@ html{-webkit-text-size-adjust:100%}
 <script>
 (function(){
   const $=id=>document.getElementById(id);
-  const KEY='bb-quote-draft-v1';
-  const today=()=>{const d=new Date();return String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear();};
-  const SAMPLE={name:'Anilkumar Chauhan',address:'8 Megginson Way',postcode:'MK42 0US',tel:'07982633917',email:'Im_shital@yahoo.com',
-    orderDate:'18-10-2026',installDate:'10-15 business days',product:'All Vertical – Classic Daylight Iron',measure:'As per attached measurement sheet',
-    windows:'5',doors:'1',total:'450',deposit:'',remaining:'£450',pay:'pending',auto:false,terms:true,notes1:'Fixed within a week',notes2:'',sign:'',signDate:'18-10-2026',fname:''};
-  const BLANK=()=>({name:'',address:'',postcode:'',tel:'',email:'',orderDate:today(),installDate:'10-15 business days',product:'',measure:'As per attached measurement sheet',
-    windows:'',doors:'',total:'',deposit:'',remaining:'',pay:'pending',auto:true,terms:true,notes1:'',notes2:'',sign:'',signDate:today(),fname:''});
+  // Draft lives only in this tab (survives a reload); opening the site fresh always starts with an empty template
+  const KEY='bb-quote-draft-v2';
+  const BLANK=()=>({name:'',address:'',postcode:'',tel:'',email:'',orderDate:'',installDate:'',product:'',measure:'',
+    windows:'',doors:'',total:'',deposit:'',remaining:'',pay:'',auto:true,terms:false,notes1:'',notes2:'',sign:'',signDate:'',fname:''});
 
+  try{localStorage.removeItem('bb-quote-draft-v1')}catch(e){}
   let state;
-  try{state=JSON.parse(localStorage.getItem(KEY))}catch(e){}
-  if(!state||typeof state!=='object')state=Object.assign({},SAMPLE);
+  try{state=JSON.parse(sessionStorage.getItem(KEY))}catch(e){}
+  if(!state||typeof state!=='object')state=BLANK();
 
   const inputs=[...document.querySelectorAll('[data-k]')];
-  // PDF file name: user's own name if typed, else "<Customer Name> Quotation"
-  const clean=s=>String(s||"").replace(/\.pdf$/i,"").replace(/[\/:*?"<>|\u0000-\u001f]+/g," ").replace(/\s+/g," ").trim();
+  // File name: user's own name if typed, else "<Customer Name> Quotation"
+  const clean=s=>String(s||"").replace(/\.(pdf|png|jpe?g)$/i,"").replace(/[\\\/:*?"<>|\u0000-\u001f]+/g," ").replace(/\s+/g," ").trim();
   const autoName=()=>(clean(state.name)||'Customer')+' Quotation';
-  const fileName=()=>(clean(state.fname)||autoName())+'.pdf';
+  const baseName=()=>clean(state.fname)||autoName();
+  const fileName=(ext='pdf')=>baseName()+'.'+ext;
   const num=s=>{const n=parseFloat(String(s||'').replace(/[^0-9.]/g,''));return isNaN(n)?null:n;};
   const money=n=>'£'+(Math.round(n*100)/100).toLocaleString('en-GB',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
 
@@ -317,8 +432,10 @@ html{-webkit-text-size-adjust:100%}
       const k=el.dataset.cb; const on=k==='terms'?state.terms:state.pay===k; el.innerHTML=on?TICK:'';
     });
     $('f_fname').placeholder=autoName();
-    $('fname_hint').textContent='File: '+fileName()+(state.fname?'':'  (khali chhodo to customer naam se banega)');
-    try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
+    const hint=$('fname_hint');hint.textContent='Saves as: ';
+    const strong=document.createElement('strong');strong.textContent=fileName('pdf')+' / .png';hint.appendChild(strong);
+    if(!state.fname)hint.append(' — leave blank to use the customer name');
+    try{sessionStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
   }
   inputs.forEach(i=>i.addEventListener('input',()=>{
     state[i.dataset.k]=i.value;
@@ -331,55 +448,129 @@ html{-webkit-text-size-adjust:100%}
   $('f_terms').addEventListener('change',e=>{state.terms=e.target.checked;render();});
   $('form').addEventListener('submit',e=>e.preventDefault());
 
-  let confirmNew=false;
+  let toastT;
+  function setStatus(t){const el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),3500);}
+
   $('b_new').addEventListener('click',()=>{
-    if(!confirmNew){confirmNew=true;$('b_new').textContent='Click again to clear';setTimeout(()=>{confirmNew=false;$('b_new').textContent='New Quotation';},3000);return;}
-    confirmNew=false;$('b_new').textContent='New Quotation';
-    state=BLANK();load();render();$('f_name').focus();setStatus('Naya blank form ready hai.');
+    state=BLANK();load();render();view('form');$('f_name').focus();setStatus('New blank quotation ready.');
   });
 
-  // scale preview
-  const scaler=$('scaler'),sheet=$('sheet');
-  function fit(){const s=Math.min(1,scaler.clientWidth/1149);sheet.style.transform='scale('+s+')';scaler.style.height=(1303*s)+'px';}
-  new ResizeObserver(fit).observe(scaler);fit();
+  // scale preview to the available width (and, on desktop, the window height) at the sheet's 1149:1303 ratio
+  const fitbox=$('fitbox'),scaler=$('scaler'),sheet=$('sheet'),wide=matchMedia('(min-width:901px)');
+  function fit(){
+    let s=Math.min(1,fitbox.clientWidth/1149);
+    if(wide.matches)s=Math.min(s,Math.max(320,innerHeight-190)/1303);
+    sheet.style.transform='scale('+s+')';scaler.style.width=(1149*s)+'px';scaler.style.height=(1303*s)+'px';
+  }
+  new ResizeObserver(fit).observe(fitbox);addEventListener('resize',fit);fit();
 
-  function setStatus(t){document.querySelectorAll('.status').forEach(el=>el.textContent=t);}
-
-  // phone tabs: Form / Preview
+  // phone tabs: Details / Preview
   function view(v){$('app').dataset.view=v;$('t_form').setAttribute('aria-selected',v==='form');$('t_prev').setAttribute('aria-selected',v==='preview');window.scrollTo(0,0);}
   $('t_form').addEventListener('click',()=>view('form'));
   $('t_prev').addEventListener('click',()=>view('preview'));
-  $('b_edit').addEventListener('click',()=>view('form'));
 
-  async function makePdf(){
+  // Render the sheet at its original 1149 x 1303 size (scale = pixel density)
+  async function snap(scale){
+    if(!window.html2canvas)throw new Error('Export tools failed to load. Check your internet connection and reload the page.');
     const clone=sheet.cloneNode(true);clone.removeAttribute('id');clone.style.transform='none';
     const off=$('off');off.innerHTML='';off.appendChild(clone);
     if(document.fonts&&document.fonts.ready)await document.fonts.ready;
-    const canvas=await html2canvas(clone,{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false,width:1149,height:1303,windowWidth:1400});
-    off.innerHTML='';
-    const {jsPDF}=window.jspdf;
-    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
-    const W=210,margin=6,w=W-margin*2,h=w*1303/1149;
-    pdf.addImage(canvas.toDataURL('image/jpeg',0.95),'JPEG',margin,margin,w,h);
-    return pdf;
+    try{return await html2canvas(clone,{scale,backgroundColor:'#ffffff',useCORS:true,logging:false,width:1149,height:1303,windowWidth:1400});}
+    finally{off.innerHTML='';}
+  }
+  // PDF page is exactly the sheet size (1149 x 1303 px at 96dpi), image fills it edge to edge — no white margins
+  async function makePdf(){
+    if(!window.jspdf)throw new Error('PDF tools failed to load. Check your internet connection and reload the page.');
+    const canvas=await snap(2);
+    const W=1149*0.75,H=1303*0.75;
+    const pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'pt',format:[W,H],compress:true});
+    pdf.addImage(canvas.toDataURL('image/jpeg',0.95),'JPEG',0,0,W,H);
+    return pdf.output('blob');
+  }
+  async function makePng(){
+    const canvas=await snap(1);
+    return new Promise((ok,no)=>canvas.toBlob(b=>b?ok(b):no(new Error('Could not create the image.')),'image/png'));
   }
 
-  const pdfBtns=[...document.querySelectorAll('[data-pdf]')];
-  pdfBtns.forEach(b=>b.addEventListener('click',downloadPdf));
-  async function downloadPdf(){
-    pdfBtns.forEach(b=>{b.disabled=true;b.textContent='PDF ban raha hai…';});setStatus('');
-    try{
-      if(!window.html2canvas||!window.jspdf)throw new Error('PDF library load nahi hui. Internet check karke page reload karein.');
-      const pdf=await makePdf();
-      let dl=null;
-      if(window.claude&&typeof window.claude.use==='function'){try{dl=await window.claude.use('downloads')}catch(e){dl=null}}
-      if(dl){
-        try{await dl.save({filename:fileName(),data:pdf.output('blob')});setStatus('PDF save ho gayi: '+fileName());}
-        catch(e){setStatus(e&&e.code==='declined'?'Download cancel kar diya gaya.':'Download is view mein nahi ho saka. Page ko claude.ai mein khol kar dobara try karein.');}
-      }else{pdf.save(fileName());setStatus('PDF download ho gayi: '+fileName());}
-    }catch(e){setStatus(e.message||'PDF nahi ban saki, dobara try karein.');}
-    finally{pdfBtns.forEach(b=>{b.disabled=false;b.textContent='Download PDF';});}
+  // Device-aware saving:
+  //  iPhone/iPad image -> iOS share sheet ("Save Image" puts it in Photos); long-press fallback on older iOS
+  //  iPhone/iPad PDF   -> Safari download (Files > Downloads); other iOS browsers use the share sheet ("Save to Files")
+  //  Android/desktop   -> normal download (Downloads folder; images also appear in the Gallery)
+  const UA=navigator.userAgent;
+  const isIOS=/iPad|iPhone|iPod/.test(UA)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const iosSafari=isIOS&&!/CriOS|FxiOS|EdgiOS|OPiOS|GSA\/|FBAN|FBAV|Instagram|Line\//.test(UA);
+  const canShareFile=f=>!!(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]}));
+
+  function download(blob,name){
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),60000);
   }
+  // returns 'done' | 'cancel' | 'blocked' (share needs a fresh tap)
+  async function share(file){
+    try{await navigator.share({files:[file]});return 'done';}
+    catch(e){if(e&&e.name==='AbortError')return 'cancel';if(e&&e.name==='NotAllowedError')return 'blocked';throw e;}
+  }
+
+  // "Ready to save" panel: gives iOS a fresh tap for the share sheet, or a long-press image as last resort
+  const modal=$('saveModal');let modalUrl='';
+  function closeModal(){modal.classList.remove('open');if(modalUrl){URL.revokeObjectURL(modalUrl);modalUrl='';}}
+  function openModal(file,kind){
+    const shareOk=canShareFile(file);
+    $('m_title').textContent=kind==='png'?'Image ready':'PDF ready';
+    $('m_text').textContent=kind==='png'
+      ?(shareOk?'Tap “Save to Photos”, then choose “Save Image”.':'Press and hold the image below, then tap “Save to Photos”.')
+      :'Tap “Save to Files”, then choose “Save to Files” and pick a folder.';
+    if(modalUrl)URL.revokeObjectURL(modalUrl);
+    modalUrl=URL.createObjectURL(file);
+    const img=$('m_img');img.hidden=kind!=='png';if(kind==='png')img.src=modalUrl;
+    const b=$('m_save');b.hidden=!shareOk;b.querySelector('span').textContent=kind==='png'?'Save to Photos':'Save to Files';
+    b.onclick=async()=>{const r=await share(file).catch(()=>'error');
+      if(r==='done'){closeModal();setStatus(kind==='png'?'Image saved':'PDF saved');}
+      else if(r==='error')setStatus('Could not open the share menu. Please try again.');};
+    modal.classList.add('open');(shareOk?b:$('m_close')).focus();
+  }
+  $('m_close').addEventListener('click',closeModal);
+  modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeModal();});
+
+  // returns a success message, or '' when nothing more should be shown
+  async function saveBlob(blob,name,kind){
+    let dl=null;
+    if(window.claude&&typeof window.claude.use==='function'){try{dl=await window.claude.use('downloads')}catch(e){dl=null}}
+    if(dl){
+      try{await dl.save({filename:name,data:blob});return 'Saved: '+name;}
+      catch(e){setStatus(e&&e.code==='declined'?'Download cancelled.':'Download is not available in this view.');return '';}
+    }
+    if(isIOS&&(kind==='png'||!iosSafari)){
+      const file=new File([blob],name,{type:blob.type});
+      if(canShareFile(file)){
+        const r=await share(file);
+        if(r==='done')return kind==='png'?'Image saved to Photos':'PDF saved';
+        if(r==='cancel')return '';
+      }
+      openModal(file,kind);return '';
+    }
+    download(blob,name);
+    if(isIOS)return 'PDF saved to Files › Downloads';
+    if(/Android/i.test(UA))return (kind==='png'?'Image':'PDF')+' saved to Downloads: '+name;
+    return (kind==='png'?'Image saved: ':'PDF downloaded: ')+name;
+  }
+
+  const allBtns=[...document.querySelectorAll('[data-pdf],[data-img]')];
+  function exporter(make,ext,busy){
+    return async()=>{
+      const labels=allBtns.map(b=>b.querySelector('span').textContent);
+      allBtns.forEach(b=>{b.disabled=true;});
+      document.querySelectorAll(ext==='pdf'?'[data-pdf] span':'[data-img] span').forEach(s=>s.textContent=busy);
+      try{const blob=await make();const msg=await saveBlob(blob,fileName(ext),ext);if(msg)setStatus(msg);}
+      catch(e){setStatus(e.message||'Could not save. Please try again.');}
+      finally{allBtns.forEach((b,i)=>{b.disabled=false;b.querySelector('span').textContent=labels[i];});}
+    };
+  }
+  const pdfJob=exporter(makePdf,'pdf','Creating PDF…');
+  const imgJob=exporter(makePng,'png','Creating image…');
+  document.querySelectorAll('[data-pdf]').forEach(b=>b.addEventListener('click',pdfJob));
+  document.querySelectorAll('[data-img]').forEach(b=>b.addEventListener('click',imgJob));
 
   load();if(state.auto)calc();render();
 })();
