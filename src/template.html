@@ -1,0 +1,386 @@
+<title>Blissful Blinds Quotation</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Dancing+Script:wght@600&display=swap">
+<style>
+/* Layout: editor form on the left, exact template preview on the right; stacks on phones */
+:root{
+  --bg:#eef1f6; --panel:#ffffff; --fg:#13224a; --muted:#5d6a86; --line:#d3dae6;
+  --navy:#10234f; --red:#d5232f; --field:#f6f8fb;
+  --font:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1424; --panel:#152038; --fg:#e6ebf5; --muted:#9aa7c2; --line:#2a3858; --field:#0f1930; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1424; --panel:#152038; --fg:#e6ebf5; --muted:#9aa7c2; --line:#2a3858; --field:#0f1930; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);margin:0}
+.app{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:24px;align-items:start;
+  padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1500px;margin:0 auto}
+@media (max-width:900px){.app{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel h1{margin:0;font-size:19px;font-weight:600;color:var(--fg);text-wrap:balance}
+.panel p.sub{margin:-8px 0 0;color:var(--muted);font-size:13px}
+.grp{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:14px}
+.grp>span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--red);font-weight:600}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label.fld{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted);font-weight:500;min-width:0}
+label.fld input,label.fld textarea{font:inherit;font-size:14px;color:var(--fg);background:var(--field);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+label.fld input:focus,label.fld textarea:focus{outline:2px solid var(--red);outline-offset:0;border-color:transparent}
+.radios{display:flex;flex-wrap:wrap;gap:8px}
+.radios label{display:flex;align-items:center;gap:6px;font-size:13.5px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;background:var(--field)}
+.radios input{accent-color:var(--red)}
+.chk{display:flex;gap:8px;align-items:center;font-size:13.5px}
+.chk input{accent-color:var(--red);width:16px;height:16px}
+.btns{display:flex;flex-wrap:wrap;gap:10px;position:sticky;bottom:0;background:var(--panel);padding-block:10px 0}
+button{font:inherit;font-size:14px;font-weight:600;border-radius:8px;padding:11px 16px;cursor:pointer;border:1px solid var(--line);background:var(--field);color:var(--fg)}
+button.primary{background:var(--red);border-color:var(--red);color:#fff;flex:1}
+button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+button:disabled{opacity:.6;cursor:wait}
+.status{font-size:13px;color:var(--muted);min-height:1.2em;margin:0}
+.preview{min-width:0;position:sticky;top:max(16px,env(safe-area-inset-top,0px))}
+.scaler{width:100%;overflow:hidden;border-radius:6px;box-shadow:0 6px 28px rgba(10,20,50,.18)}
+.hint{font-size:12px;color:var(--muted);margin:8px 0 0}
+.fhint{font-size:11.5px;color:var(--muted);font-weight:400}
+.tabs,.mob{display:none}
+
+/* ===== Phones / small tablets: Form and Preview as two tabs ===== */
+html{-webkit-text-size-adjust:100%}
+@media (max-width:900px){
+  .app{gap:12px;padding-top:max(10px,env(safe-area-inset-top,0px));padding-bottom:max(16px,env(safe-area-inset-bottom,0px))}
+  .tabs{display:flex;position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0;gap:6px}
+  .tabs button{flex:1;padding:10px 8px;border-radius:999px}
+  .tabs button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+  .app[data-view="form"] .preview,.app[data-view="preview"] .panel{display:none}
+  .preview{position:static}
+  .mob{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+  .panel{padding:16px;border-radius:10px}
+  label.fld input,label.fld textarea{font-size:16px;padding:11px 12px}
+  .radios label{padding:9px 14px}
+  .chk input{width:20px;height:20px}
+  .btns{padding-bottom:max(10px,env(safe-area-inset-bottom,0px));margin-inline:-16px;padding-inline:16px;border-top:1px solid var(--line)}
+  button{min-height:46px}
+}
+@media (max-width:380px){.row{grid-template-columns:minmax(0,1fr)}}
+
+/* ===== The template sheet (fixed paper colours, 1149 x 1303 like the original) ===== */
+.sheet{width:1149px;height:1303px;position:relative;background:#ffffff;color:#10234f;font-family:'Poppins',Arial,sans-serif;transform-origin:0 0;overflow:hidden}
+.sheet .a{position:absolute}
+.sheet img.hdr{left:0;top:0;width:1149px;height:215px}
+.sheet img.corner{right:0;bottom:0;width:101px;height:163px}
+.card{left:20px;top:220px;width:1111px;height:745px;border:3px solid #10234f;border-top:none;border-radius:14px}
+.topl{left:20px;top:218px;width:545px;height:3px;background:#10234f;border-radius:3px 0 0 0}
+.topr{left:585px;top:218px;width:545px;height:3px;background:#d5232f}
+.lbl{font-weight:600;font-size:20px;line-height:1;white-space:nowrap;color:#10234f}
+.lbl.u::after{content:"";position:absolute;left:1px;top:30px;width:30px;height:3px;background:#d5232f;border-radius:2px}
+.ln{border-bottom:1.6px solid #7f93ae;height:34px;font-size:21.5px;font-weight:400;color:#1a2d5e;padding-left:14px;white-space:nowrap;overflow:hidden;line-height:30px}
+.box{border:1.6px solid #6f84a3;font-size:21.5px;color:#1a2d5e;padding:0 14px;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
+.cb{width:29px;height:29px;border:1.8px solid #10234f;border-radius:3px;background:#fff}
+.cb svg{position:absolute;left:2px;top:-4px;width:26px;height:30px}
+.opt{font-size:20.5px;color:#1a2d5e;white-space:nowrap}
+.small{font-size:17px;color:#1a2d5e;white-space:nowrap}
+.bar{left:32px;top:920px;width:1086px;height:35px;background:#10234f;border-radius:10px;color:#fff;font-weight:600;font-size:17.5px;letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:16px}
+.bar i{display:block;width:220px;height:2px;background:#d5232f}
+.bx{border:2.4px solid #10234f;border-radius:12px;background:#fff}
+.bh{font-weight:600;font-size:18px;color:#d5232f;letter-spacing:.01em;white-space:nowrap;border-bottom:1.5px solid #d5232f;padding-bottom:2px;line-height:1.1}
+.k{font-size:17px;color:#1a2d5e;white-space:nowrap}
+.v{font-size:18.5px;font-weight:500;color:#10234f;white-space:nowrap}
+.hr{height:1.4px;background:#7f93ae}
+.big{font-weight:600;font-size:22px;color:#10234f;white-space:nowrap;line-height:1.2}
+.bv{font-size:21px;color:#10234f;white-space:nowrap;line-height:1.2}
+.sig{font-family:'Dancing Script',cursive;font-size:30px;line-height:30px}
+.offscreen{position:fixed;left:-30000px;top:0;pointer-events:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app" id="app" data-view="form">
+  <div class="tabs" role="tablist" aria-label="View">
+    <button type="button" role="tab" id="t_form" aria-selected="true">Form</button>
+    <button type="button" role="tab" id="t_prev" aria-selected="false">Preview</button>
+  </div>
+  <form class="panel" id="form" autocomplete="off">
+    <h1>Blissful Blinds Quotation</h1>
+    <p class="sub">Customer details bharo, preview live update hoga. Phir PDF download karo.</p>
+
+    <div class="grp"><span>Customer</span>
+      <label class="fld">Customer Name<input id="f_name" data-k="name"></label>
+      <label class="fld">Address<input id="f_address" data-k="address"></label>
+      <div class="row">
+        <label class="fld">Post Code<input id="f_postcode" data-k="postcode"></label>
+        <label class="fld">Tel<input id="f_tel" data-k="tel" inputmode="tel"></label>
+      </div>
+      <label class="fld">Email<input id="f_email" data-k="email" inputmode="email"></label>
+    </div>
+
+    <div class="grp"><span>Order</span>
+      <div class="row">
+        <label class="fld">Order Date<input id="f_orderDate" data-k="orderDate"></label>
+        <label class="fld">Installation Date<input id="f_installDate" data-k="installDate"></label>
+      </div>
+      <label class="fld">Blind / Product Type<input id="f_product" data-k="product"></label>
+      <label class="fld">Measurements (Width x Drop)<input id="f_measure" data-k="measure"></label>
+      <div class="row">
+        <label class="fld">Windows<input id="f_windows" data-k="windows" inputmode="numeric"></label>
+        <label class="fld">Doors<input id="f_doors" data-k="doors" inputmode="numeric"></label>
+      </div>
+    </div>
+
+    <div class="grp"><span>Payment</span>
+      <label class="fld">Total Quotation (£)<input id="f_total" data-k="total" inputmode="decimal"></label>
+      <div class="radios" role="radiogroup" aria-label="Payment status">
+        <label><input type="radio" name="pay" id="p_dep" value="deposit"> Deposit Paid</label>
+        <label><input type="radio" name="pay" id="p_full" value="full"> Full Payment</label>
+        <label><input type="radio" name="pay" id="p_pend" value="pending"> Pending</label>
+      </div>
+      <label class="chk"><input type="checkbox" id="f_auto" checked> Deposit aur balance khud calculate karo</label>
+      <div class="row">
+        <label class="fld">Deposit (50%)<input id="f_deposit" data-k="deposit"></label>
+        <label class="fld">Remaining Balance<input id="f_remaining" data-k="remaining"></label>
+      </div>
+    </div>
+
+    <div class="grp"><span>Notes &amp; Sign-off</span>
+      <label class="fld">Additional Notes (line 1)<input id="f_notes1" data-k="notes1"></label>
+      <label class="fld">Additional Notes (line 2)<input id="f_notes2" data-k="notes2"></label>
+      <label class="chk"><input type="checkbox" id="f_terms"> Terms &amp; Conditions Acknowledged</label>
+      <div class="row">
+        <label class="fld">Customer Signature (optional)<input id="f_sign" data-k="sign" placeholder="Blank = hand sign"></label>
+        <label class="fld">Date<input id="f_signDate" data-k="signDate"></label>
+      </div>
+    </div>
+
+    <div class="grp"><span>PDF</span>
+      <label class="fld">PDF File Name<input id="f_fname" data-k="fname" enterkeyhint="done">
+        <span class="fhint" id="fname_hint"></span></label>
+    </div>
+
+    <div class="btns">
+      <button type="button" class="primary" data-pdf>Download PDF</button>
+      <button type="button" id="b_new">New Quotation</button>
+    </div>
+    <p class="status" role="status"></p>
+  </form>
+
+  <div class="preview">
+    <div class="scaler" id="scaler"><div class="sheet" id="sheet">
+      <img class="a hdr" src="{{HEADER}}" alt="Blissful Blinds Ltd">
+      <img class="a corner" src="{{CORNER}}" alt="">
+      <div class="a card"></div><div class="a topl"></div><div class="a topr"></div>
+
+      <div class="a lbl u" style="left:55px;top:243px">Customer Name:</div>
+      <div class="a ln" style="left:254px;top:233px;width:843px" data-v="name"></div>
+
+      <div class="a lbl" style="left:55px;top:291px">Address:</div>
+      <div class="a ln" style="left:160px;top:281px;width:937px" data-v="address"></div>
+
+      <div class="a lbl" style="left:57px;top:339px">Post Code:</div>
+      <div class="a ln" style="left:186px;top:329px;width:911px" data-v="postcode"></div>
+
+      <div class="a lbl u" style="left:56px;top:386px">Tel:</div>
+      <div class="a ln" style="left:108px;top:376px;width:463px" data-v="tel"></div>
+      <div class="a lbl u" style="left:594px;top:391px">Email:</div>
+      <div class="a ln" style="left:672px;top:376px;width:425px;padding-left:20px" data-v="email"></div>
+
+      <div class="a lbl u" style="left:56px;top:439px">Order Date:</div>
+      <div class="a ln" style="left:194px;top:428px;width:377px" data-v="orderDate"></div>
+      <div class="a lbl" style="left:595px;top:443px">Installation Date:</div>
+      <div class="a ln" style="left:789px;top:428px;width:308px;padding-left:6px" data-v="installDate"></div>
+
+      <div class="a lbl u" style="left:57px;top:489px">Blind / Product Type:</div>
+      <div class="a ln" style="left:292px;top:482px;width:805px;padding-left:18px" data-v="product"></div>
+
+      <div class="a lbl u" style="left:58px;top:543px">Measurements (Width x Drop):</div>
+      <div class="a ln" style="left:395px;top:533px;width:393px;padding-left:16px;font-size:19px" data-v="measure"></div>
+      <div class="a lbl" style="left:809px;top:546px">Total Quotation:</div>
+      <div class="a ln" style="left:988px;top:533px;width:109px;padding-left:10px" data-v="totalTxt"></div>
+
+      <div class="a lbl u" style="left:58px;top:598px">Window/Door Quantity:</div>
+      <div class="a box" style="left:345px;top:589px;width:266px;height:42px;padding:0"><span style="width:145px;padding-left:12px;border-right:1.6px solid #6f84a3;line-height:30px;overflow:hidden" data-v="winTxt"></span><span style="padding-left:12px;overflow:hidden" data-v="doorTxt"></span></div>
+
+      <div class="a lbl u" style="left:58px;top:654px">Deposit (50%):</div>
+      <div class="a box" style="left:345px;top:643px;width:266px;height:43px" data-v="deposit"></div>
+      <div class="a lbl" style="left:632px;top:654px">Remaining Balance:</div>
+      <div class="a box" style="left:863px;top:643px;width:234px;height:43px;padding-left:16px" data-v="remaining"></div>
+
+      <div class="a lbl u" style="left:58px;top:706px">Payment Status:</div>
+      <div class="a cb" style="left:303px;top:703px" data-cb="deposit"></div><div class="a opt" style="left:350px;top:704px">Deposit Paid</div>
+      <div class="a cb" style="left:513px;top:703px" data-cb="full"></div><div class="a opt" style="left:558px;top:704px">Full Payment</div>
+      <div class="a cb" style="left:731px;top:703px" data-cb="pending"></div><div class="a opt" style="left:782px;top:704px">Pending</div>
+
+      <div class="a lbl" style="left:58px;top:756px">Additional Notes / Requirements:</div>
+      <div class="a ln" style="left:423px;top:743px;width:672px;padding-left:9px" data-v="notes1"></div>
+      <div class="a ln" style="left:58px;top:779px;width:1037px;padding-left:4px" data-v="notes2"></div>
+
+      <div class="a lbl u" style="left:58px;top:835px">Terms &amp; Conditions Acknowledged:</div>
+      <div class="a cb" style="left:437px;top:830px;width:27px;height:27px" data-cb="terms"></div>
+      <div class="a small" style="left:479px;top:831px">A 50% deposit is required to confirm the order.</div>
+
+      <div class="a lbl" style="left:58px;top:882px">Customer Signature:</div>
+      <div class="a ln sig" style="left:283px;top:866px;width:462px;height:34px;border-bottom-width:1.4px" data-v="sign"></div>
+      <div class="a lbl" style="left:779px;top:882px">Date:</div>
+      <div class="a ln" style="left:850px;top:866px;width:245px;height:34px;padding-left:27px" data-v="signDate"></div>
+
+      <div class="a bar"><i></i>QUOTATION VALID FOR 14 DAYS ONLY<i></i></div>
+
+      <!-- Bank -->
+      <div class="a bx" style="left:20px;top:975px;width:411px;height:171px"></div>
+      <div class="a bh" style="left:114px;top:989px">BANK PAYMENT DETAILS</div>
+      <div class="a k" style="left:40px;top:1025px">Account Name:</div><div class="a v" style="left:232px;top:1024px">Blissful Blinds Ltd</div>
+      <div class="a hr" style="left:225px;top:1053px;width:187px"></div>
+      <div class="a k" style="left:40px;top:1064px">Account Number:</div><div class="a v" style="left:232px;top:1063px">32664490</div>
+      <div class="a hr" style="left:225px;top:1091px;width:187px"></div>
+      <div class="a k" style="left:40px;top:1102px">Sort Code:</div><div class="a v" style="left:232px;top:1101px">04-06-05</div>
+      <div class="a hr" style="left:225px;top:1129px;width:187px"></div>
+
+      <!-- Terms -->
+      <div class="a bx" style="left:442px;top:975px;width:301px;height:171px"></div>
+      <div class="a bh" style="left:492px;top:989px">TERMS &amp; CONDITIONS</div>
+      <div class="a" style="left:452px;top:1050px;width:281px;text-align:center;font-size:18px;line-height:28px;color:#1a2d5e">A 50% deposit is required<br>to confirm the order.</div>
+
+      <!-- Contact -->
+      <div class="a bx" style="left:754px;top:975px;width:377px;height:171px"></div>
+      <div class="a bh" style="left:830px;top:989px">CONTACT DETAILS</div>
+      <img class="a" src="{{PHONE}}" alt="" style="left:770px;top:1031px;width:40px;height:45px">
+      <div class="a k" style="left:820px;top:1043px;font-size:18px">Landline:</div><div class="a v" style="left:912px;top:1042px;font-size:19px">0800 246 5234</div>
+      <img class="a" src="{{MAIL}}" alt="" style="left:770px;top:1088px;width:42px;height:37px">
+      <div class="a k" style="left:820px;top:1092px;font-size:18px">Email:</div><div class="a v" style="left:890px;top:1091px;font-size:16.5px;font-weight:400">info@blissfulblindsltd.co.uk</div>
+
+      <!-- WhatsApp / Website -->
+      <div class="a bx" style="left:20px;top:1162px;width:641px;height:100px"></div>
+      <img class="a" src="{{WA}}" alt="" style="left:40px;top:1170px;width:75px;height:80px">
+      <div class="a big" style="left:124px;top:1180px">WhatsApp</div><div class="a bv" style="left:124px;top:1214px;font-size:22px">07341645339</div>
+      <div class="a" style="left:286px;top:1175px;width:2px;height:74px;background:#10234f"></div>
+      <img class="a" src="{{WEB}}" alt="" style="left:310px;top:1170px;width:75px;height:80px">
+      <div class="a big" style="left:394px;top:1182px">Website</div><div class="a bv" style="left:396px;top:1212px;font-size:19px">www.blissfulblindsltd.co.uk</div>
+
+      <!-- Warranty -->
+      <div class="a bx" style="left:690px;top:1162px;width:356px;height:100px"></div>
+      <img class="a" src="{{SHIELD}}" alt="" style="left:700px;top:1172px;width:80px;height:80px">
+      <div class="a big" style="left:792px;top:1180px;font-weight:700">Warranty</div><div class="a bv" style="left:792px;top:1213px">2 Years</div>
+    </div></div>
+    <p class="hint">Company details, logo aur bank details fixed hain. Sirf customer data change hota hai.</p>
+    <div class="mob">
+      <button type="button" class="primary" data-pdf>Download PDF</button>
+      <button type="button" id="b_edit">Edit Details</button>
+    </div>
+    <p class="status mob" role="status"></p>
+  </div>
+</div>
+
+<div class="offscreen" id="off" aria-hidden="true"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const KEY='bb-quote-draft-v1';
+  const today=()=>{const d=new Date();return String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear();};
+  const SAMPLE={name:'Anilkumar Chauhan',address:'8 Megginson Way',postcode:'MK42 0US',tel:'07982633917',email:'Im_shital@yahoo.com',
+    orderDate:'18-10-2026',installDate:'10-15 business days',product:'All Vertical – Classic Daylight Iron',measure:'As per attached measurement sheet',
+    windows:'5',doors:'1',total:'450',deposit:'',remaining:'£450',pay:'pending',auto:false,terms:true,notes1:'Fixed within a week',notes2:'',sign:'',signDate:'18-10-2026',fname:''};
+  const BLANK=()=>({name:'',address:'',postcode:'',tel:'',email:'',orderDate:today(),installDate:'10-15 business days',product:'',measure:'As per attached measurement sheet',
+    windows:'',doors:'',total:'',deposit:'',remaining:'',pay:'pending',auto:true,terms:true,notes1:'',notes2:'',sign:'',signDate:today(),fname:''});
+
+  let state;
+  try{state=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+  if(!state||typeof state!=='object')state=Object.assign({},SAMPLE);
+
+  const inputs=[...document.querySelectorAll('[data-k]')];
+  // PDF file name: user's own name if typed, else "<Customer Name> Quotation"
+  const clean=s=>String(s||"").replace(/\.pdf$/i,"").replace(/[\/:*?"<>|\u0000-\u001f]+/g," ").replace(/\s+/g," ").trim();
+  const autoName=()=>(clean(state.name)||'Customer')+' Quotation';
+  const fileName=()=>(clean(state.fname)||autoName())+'.pdf';
+  const num=s=>{const n=parseFloat(String(s||'').replace(/[^0-9.]/g,''));return isNaN(n)?null:n;};
+  const money=n=>'£'+(Math.round(n*100)/100).toLocaleString('en-GB',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+
+  function load(){
+    inputs.forEach(i=>i.value=state[i.dataset.k]??'');
+    $('p_dep').checked=state.pay==='deposit';$('p_full').checked=state.pay==='full';$('p_pend').checked=state.pay==='pending';
+    $('f_auto').checked=!!state.auto;$('f_terms').checked=!!state.terms;
+  }
+  function calc(){
+    if(!state.auto)return;
+    const t=num(state.total);
+    if(t===null){state.deposit='';state.remaining='';}
+    else{const d=t/2;state.deposit=money(d);state.remaining=money(state.pay==='full'?0:state.pay==='deposit'?t-d:t);}
+    $('f_deposit').value=state.deposit;$('f_remaining').value=state.remaining;
+  }
+  const TICK='<svg viewBox="0 0 26 30"><path d="M4 16 L11 24 L23 3" fill="none" stroke="#10234f" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function render(){
+    const t=num(state.total);
+    const v=Object.assign({},state,{
+      totalTxt: state.total===''?'':(t===null?state.total:money(t)),
+      winTxt: 'Windows: '+(state.windows||''), doorTxt:'Doors: '+(state.doors||'')
+    });
+    document.querySelectorAll('#sheet [data-v]').forEach(el=>el.textContent=v[el.dataset.v]||'');
+    document.querySelectorAll('#sheet [data-cb]').forEach(el=>{
+      const k=el.dataset.cb; const on=k==='terms'?state.terms:state.pay===k; el.innerHTML=on?TICK:'';
+    });
+    $('f_fname').placeholder=autoName();
+    $('fname_hint').textContent='File: '+fileName()+(state.fname?'':'  (khali chhodo to customer naam se banega)');
+    try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
+  }
+  inputs.forEach(i=>i.addEventListener('input',()=>{
+    state[i.dataset.k]=i.value;
+    if(i.dataset.k==='deposit'||i.dataset.k==='remaining'){state.auto=false;$('f_auto').checked=false;}
+    if(i.dataset.k==='total')calc();
+    render();
+  }));
+  document.querySelectorAll('input[name=pay]').forEach(r=>r.addEventListener('change',()=>{state.pay=r.value;calc();render();}));
+  $('f_auto').addEventListener('change',e=>{state.auto=e.target.checked;calc();render();});
+  $('f_terms').addEventListener('change',e=>{state.terms=e.target.checked;render();});
+  $('form').addEventListener('submit',e=>e.preventDefault());
+
+  let confirmNew=false;
+  $('b_new').addEventListener('click',()=>{
+    if(!confirmNew){confirmNew=true;$('b_new').textContent='Click again to clear';setTimeout(()=>{confirmNew=false;$('b_new').textContent='New Quotation';},3000);return;}
+    confirmNew=false;$('b_new').textContent='New Quotation';
+    state=BLANK();load();render();$('f_name').focus();setStatus('Naya blank form ready hai.');
+  });
+
+  // scale preview
+  const scaler=$('scaler'),sheet=$('sheet');
+  function fit(){const s=Math.min(1,scaler.clientWidth/1149);sheet.style.transform='scale('+s+')';scaler.style.height=(1303*s)+'px';}
+  new ResizeObserver(fit).observe(scaler);fit();
+
+  function setStatus(t){document.querySelectorAll('.status').forEach(el=>el.textContent=t);}
+
+  // phone tabs: Form / Preview
+  function view(v){$('app').dataset.view=v;$('t_form').setAttribute('aria-selected',v==='form');$('t_prev').setAttribute('aria-selected',v==='preview');window.scrollTo(0,0);}
+  $('t_form').addEventListener('click',()=>view('form'));
+  $('t_prev').addEventListener('click',()=>view('preview'));
+  $('b_edit').addEventListener('click',()=>view('form'));
+
+  async function makePdf(){
+    const clone=sheet.cloneNode(true);clone.removeAttribute('id');clone.style.transform='none';
+    const off=$('off');off.innerHTML='';off.appendChild(clone);
+    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+    const canvas=await html2canvas(clone,{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false,width:1149,height:1303,windowWidth:1400});
+    off.innerHTML='';
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+    const W=210,margin=6,w=W-margin*2,h=w*1303/1149;
+    pdf.addImage(canvas.toDataURL('image/jpeg',0.95),'JPEG',margin,margin,w,h);
+    return pdf;
+  }
+
+  const pdfBtns=[...document.querySelectorAll('[data-pdf]')];
+  pdfBtns.forEach(b=>b.addEventListener('click',downloadPdf));
+  async function downloadPdf(){
+    pdfBtns.forEach(b=>{b.disabled=true;b.textContent='PDF ban raha hai…';});setStatus('');
+    try{
+      if(!window.html2canvas||!window.jspdf)throw new Error('PDF library load nahi hui. Internet check karke page reload karein.');
+      const pdf=await makePdf();
+      let dl=null;
+      if(window.claude&&typeof window.claude.use==='function'){try{dl=await window.claude.use('downloads')}catch(e){dl=null}}
+      if(dl){
+        try{await dl.save({filename:fileName(),data:pdf.output('blob')});setStatus('PDF save ho gayi: '+fileName());}
+        catch(e){setStatus(e&&e.code==='declined'?'Download cancel kar diya gaya.':'Download is view mein nahi ho saka. Page ko claude.ai mein khol kar dobara try karein.');}
+      }else{pdf.save(fileName());setStatus('PDF download ho gayi: '+fileName());}
+    }catch(e){setStatus(e.message||'PDF nahi ban saki, dobara try karein.');}
+    finally{pdfBtns.forEach(b=>{b.disabled=false;b.textContent='Download PDF';});}
+  }
+
+  load();if(state.auto)calc();render();
+})();
+</script>
